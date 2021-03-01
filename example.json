@@ -1,0 +1,52 @@
+{
+  "builders": [
+    {
+      "boot_command": [
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
+      ],
+      "disk_size": "10240",
+      "guest_os_type": "RedHat_64",
+      "http_directory": "http",
+      "iso_checksum": "md5:{{ user `checksum` }}",
+      "iso_url": "{{ user `iso` }}",
+      "shutdown_command": "/sbin/reboot ",
+      "ssh_password": "123456",
+      "ssh_port": 22,
+      "ssh_timeout": "600s",
+      "ssh_username": "root",
+      "type": "virtualbox-iso",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "2048"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "1"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--audio",
+          "none"
+        ]
+      ],
+      "vm_name": "xCAT_server"
+    }
+  ],
+  "provisioners": [
+    {
+      "scripts": "install.sh",
+      "type": "shell"
+    }
+  ],
+  "variables": {
+    "checksum": "5b61d5b378502e9cba8ba26b6696c92a",
+    "iso": "file:///C:/cygwin64/home/DEV-HPCTECH/CentOS-7-x86_64-DVD-1810.iso"
+  }
+}
+
